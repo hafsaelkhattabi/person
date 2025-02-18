@@ -1,55 +1,58 @@
 import React from "react";
-import { Component } from "react";
+import { useState, useEffect } from "react";
+import './styles.css'
 
-class Person extends React.Component {
-    constructor (props){
-        super (props);
-            this.state = {
-                  imgsrc: "#",
-                  fullname: "hafsa",
-                  bio: "I am a student of web development",
-                  profession: "student",
-                  isMe: false,
-                  timer: 0
-            }
-    }
+ const Person = () => {
+    
+     const [person, setperson] = useState ({
+        imgsrc: "./me.jpg",
+        fullname: "hafsa",
+        bio: "I am a student of web development",
+        profession: "student",
+     })     
+         
+    //  state for timer
+     const [timer, settimer] = useState(0) 
      
-    componentDidMount () {
-        this.timer = setInterval (() => {
-            this.setState ((prevState) => ({
-                timer: prevState.timer + 1,
-            }))
+    //  state for showing and hiding profile
+     const [isMe, setisMe] = useState (false)
+
+    // useEffect for the timer
+     useEffect (() => {
+        const intervaltime = setInterval (() => {
+            settimer (pervtime => pervtime + 1)
         }, 1000)
-    }  
-        componentWillUnmount () {
-            clearInterval (this.timer)
+        return () => {
+            clearInterval (intervaltime)
         }
-            
+    }, [])
 
-    showstates = () => {
-        this.setState ({ isMe: !this.state.isMe})
-    }
 
-    render () {
+
+const showstates = () => {
+        setisMe ((previsMe) => !previsMe)
+}
+
+    
         return (
             <div>
-                <button onClick={this.showstates}>
-                    {this.state.isMe ? "hide Profile" : "show Profile"}
+                <button onClick={showstates}>
+                    {isMe ? "hide Profile" : "show Profile"}
                 </button>
-                {this.state.isMe && (
+                {isMe && (
                     <div>
-                        <img src={this.state.imgsrc}/>
-                        <h2> {this.state.fullname}</h2>
-                        <p>{this.state.bio}</p>
-                        <p>{this.state.profession}</p>
-                        <p>Time: {this.state.timer}</p>
+                        <img className='img' src={person.imgsrc}/>
+                        <h2> {person.fullname}</h2>
+                        <p>{person.bio}</p>
+                        <p>{person.profession}</p>
+                        <p>Time: {timer}</p>
                     </div>
                 )
                 }
             </div>
         )
+
     }
 
-}
 
 export default Person
